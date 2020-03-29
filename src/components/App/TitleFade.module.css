@@ -1,8 +1,10 @@
 .appear {
-  transform: translateX(-200%);
+  opacity: 0;
+  transform: translateX(-100%);
 }
 
-.appear-active {
+.appearActive {
+  opacity: 1;
   transform: translateX(0);
-  transition: transform 500ms linear;
+  transition: all 250ms linear;
 }

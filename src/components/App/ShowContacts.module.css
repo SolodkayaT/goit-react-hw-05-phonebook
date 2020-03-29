@@ -3,7 +3,7 @@
   transform: scale(0.1);
 }
 
-.appear-active {
+.appearActive {
   transform: translateX(0);
   opacity: 1;
   transform: scale(1);

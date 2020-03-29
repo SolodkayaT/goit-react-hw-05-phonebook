@@ -4,17 +4,12 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ContactListItem from "../ContactListItem/ContactListItem";
 import ContactListButton from "../ContactListButton/ContactListButton";
 import styles from "./ContactList.module.css";
-import "./ContactList-item-animation.css";
 
 export default function ContactList({ contacts, onRemove }) {
   return (
     <TransitionGroup component="ul" className={styles.contactList}>
       {contacts.map(contact => (
-        <CSSTransition
-          key={contact.name}
-          timeout={250}
-          classNames="ContactsList-item-fade"
-        >
+        <CSSTransition key={contact.name} timeout={250} classNames={styles}>
           <ContactListItem contact={contact}>
             <ContactListButton
               contact={contact}
