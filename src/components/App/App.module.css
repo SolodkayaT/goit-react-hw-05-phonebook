@@ -8,3 +8,10 @@
   padding-top: 30px;
   text-align: center;
 }
+.notification {
+  width: 600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

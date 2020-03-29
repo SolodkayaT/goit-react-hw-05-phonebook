@@ -1,22 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ContactListItem from "../ContactListItem/ContactListItem";
-import { uuid } from "uuidv4";
 import ContactListButton from "../ContactListButton/ContactListButton";
 import styles from "./ContactList.module.css";
+import "./ContactList-item-animation.css";
 
 export default function ContactList({ contacts, onRemove }) {
   return (
-    <ul className={styles.contactList}>
+    <TransitionGroup component="ul" className={styles.contactList}>
       {contacts.map(contact => (
-        <ContactListItem contact={contact} key={uuid()}>
-          <ContactListButton
-            contact={contact}
-            onRemoveContact={() => onRemove(contact.id)}
-          />
-        </ContactListItem>
+        <CSSTransition
+          key={contact.name}
+          timeout={250}
+          classNames="ContactsList-item-fade"
+        >
+          <ContactListItem contact={contact}>
+            <ContactListButton
+              contact={contact}
+              onRemoveContact={() => onRemove(contact.id)}
+            />
+          </ContactListItem>
+        </CSSTransition>
       ))}
-    </ul>
+    </TransitionGroup>
   );
 }
 

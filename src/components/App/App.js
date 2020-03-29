@@ -1,21 +1,28 @@
 import React, { Component } from "react";
+import { CSSTransition } from "react-transition-group";
 import ContactList from "../ContactList/ContactList";
 import ContactForm from "../ContactForm/ContactForm";
 import Filter from "../Filter/Filter";
+import Notification from "../Notification/Notification";
 import styles from "./App.module.css";
-import { uuid } from "uuidv4";
+import TitleFadeStyles from "./TitleFade.module.css";
+import ShowContactsStyles from "./ShowContacts.module.css";
+import FilterShowStyles from "./FilterShow.module.css";
+import NotificationShowStyles from "./NotificationShow.module.css";
 
 export default class App extends Component {
   state = {
     contacts: [],
-    filter: ""
+    filter: "",
+    showTitle: false,
+    NotificationName: ""
   };
   componentDidMount() {
     const persistedContacts = localStorage.getItem("contacts");
-    console.log(persistedContacts);
     if (persistedContacts) {
       this.setState({
-        contacts: JSON.parse(persistedContacts)
+        contacts: JSON.parse(persistedContacts),
+        showTitle: true
       });
     }
   }
@@ -34,12 +41,15 @@ export default class App extends Component {
     const { contacts } = this.state;
     const isExist = contacts.some(contact => contact.name === name);
     if (isExist) {
-      alert(`${name} is already in cntacts!`);
+      this.setState({ NotificationName: name });
       return;
     }
-    const contact = { id: uuid(), name, phone };
+    const contact = { id: name, name, phone };
     this.setState(prevState => {
-      return { contacts: [...prevState.contacts, contact] };
+      return {
+        NotificationName: "",
+        contacts: [...prevState.contacts, contact]
+      };
     });
   };
 
@@ -53,28 +63,58 @@ export default class App extends Component {
   removeContact = id => {
     this.setState(prevState => {
       return {
+        NotificationName: "",
         contacts: prevState.contacts.filter(contact => contact.id !== id)
       };
     });
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filter, NotificationName } = this.state;
     const visibleContacts = this.getFiltredContacts();
     return (
       <section className={styles.section}>
-        <h1 className={styles.title}>Phonebook</h1>
+        <div className={styles.notification}>
+          <CSSTransition
+            in={true}
+            appear={true}
+            classNames={TitleFadeStyles}
+            timeout={500}
+            unmountOnExit
+          >
+            <h1 className={styles.title}>Phonebook</h1>
+          </CSSTransition>
+          <CSSTransition
+            in={NotificationName.length > 0}
+            timeout={250}
+            classNames={NotificationShowStyles}
+            unmountOnExit
+          >
+            <Notification name={NotificationName}></Notification>
+          </CSSTransition>
+        </div>
         {ContactForm && <ContactForm onAddContact={this.addContact} />}
         <h2 className={styles.title}>Contacts</h2>
-        {contacts.length > 1 && (
+        <CSSTransition
+          in={contacts.length > 1}
+          classNames={FilterShowStyles}
+          timeout={250}
+          unmountOnExit
+        >
           <Filter value={filter} onChangeFilter={this.changeFilter} />
-        )}
-        {visibleContacts.length > 0 && (
+        </CSSTransition>
+        <CSSTransition
+          in={true}
+          appear={true}
+          classNames={ShowContactsStyles}
+          timeout={500}
+          unmountOnExit
+        >
           <ContactList
             contacts={visibleContacts}
             onRemove={this.removeContact}
           />
-        )}
+        </CSSTransition>
       </section>
     );
   }
