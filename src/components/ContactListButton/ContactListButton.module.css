@@ -1,0 +1,11 @@
+.contactButton:after {
+  content: " \00d7";
+  font-size: 20px;
+  padding: 10px;
+  color: #ffffff;
+}
+.contactButton {
+  background-color: rgb(182, 39, 70);
+  border: none;
+  cursor: pointer;
+}

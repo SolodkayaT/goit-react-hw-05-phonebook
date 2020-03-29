@@ -1,0 +1,15 @@
+.filter {
+  padding: 10px 0 10px 0;
+  width: 100%;
+  font-size: 20px;
+}
+.filterContainer {
+  width: 600px;
+  margin: 0 auto;
+  padding: 10px 10px 20px 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 30px;
+}
+.filterName {
+  font-size: 20px;
+}
