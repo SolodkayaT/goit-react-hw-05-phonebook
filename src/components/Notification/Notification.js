@@ -1,19 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./Notification.module.css";
 
-export default function Notification({ name }) {
+export default function Notification() {
   return (
     <p className={styles.NotificationMessage}>
-      {name} is allready in contacts!
+      Contact is allready in contacts!
     </p>
   );
 }
-
-Notification.defaultProps = {
-  name: ""
-};
-
-Notification.propTypes = {
-  name: PropTypes.string
-};

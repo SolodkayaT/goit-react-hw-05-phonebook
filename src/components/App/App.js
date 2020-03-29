@@ -15,7 +15,7 @@ export default class App extends Component {
     contacts: [],
     filter: "",
     showTitle: false,
-    NotificationName: ""
+    isNotification: false
   };
   componentDidMount() {
     const persistedContacts = localStorage.getItem("contacts");
@@ -41,13 +41,13 @@ export default class App extends Component {
     const { contacts } = this.state;
     const isExist = contacts.some(contact => contact.name === name);
     if (isExist) {
-      this.setState({ NotificationName: name });
+      this.setState({ isNotification: true });
       return;
     }
     const contact = { id: name, name, phone };
     this.setState(prevState => {
       return {
-        NotificationName: "",
+        isNotification: false,
         contacts: [...prevState.contacts, contact]
       };
     });
@@ -63,14 +63,14 @@ export default class App extends Component {
   removeContact = id => {
     this.setState(prevState => {
       return {
-        NotificationName: "",
+        isNotification: false,
         contacts: prevState.contacts.filter(contact => contact.id !== id)
       };
     });
   };
 
   render() {
-    const { contacts, filter, NotificationName } = this.state;
+    const { contacts, filter, isNotification } = this.state;
     const visibleContacts = this.getFiltredContacts();
     return (
       <section className={styles.section}>
@@ -85,12 +85,13 @@ export default class App extends Component {
             <h1 className={styles.title}>Phonebook</h1>
           </CSSTransition>
           <CSSTransition
-            in={NotificationName.length > 0}
-            timeout={250}
+            in={isNotification}
+            timeout={750}
             classNames={NotificationShowStyles}
             unmountOnExit
+            onEntered={() => this.setState({ isNotification: false })}
           >
-            <Notification name={NotificationName}></Notification>
+            <Notification />
           </CSSTransition>
         </div>
         {ContactForm && <ContactForm onAddContact={this.addContact} />}

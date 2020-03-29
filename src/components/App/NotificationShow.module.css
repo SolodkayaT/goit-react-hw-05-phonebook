@@ -17,5 +17,6 @@
 .exitActive {
   opacity: 0;
   transform: translate(100%);
-  transition: all 250ms linear;
+  transition: all 600ms linear;
+  transition-delay: 300ms;
 }
